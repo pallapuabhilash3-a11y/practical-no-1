@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+
+void merge(std::vector<int>& arr, int left, int mid, int right) {
+    // Create a temporary storage container for the merged result
+    std::vector<int> temp;
+    
+    int i = left;      // Initial index of the left sub-segment
+    int j = mid + 1;   // Initial index of the right sub-segment
+
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            temp.push_back(arr[i]);
+            i++;
+        } else {
+            temp.push_back(arr[j]);
+            j++;
+        }
+    }
+
+    while (i <= mid) {
+        temp.push_back(arr[i]);
+        i++;
+    }
+
+    while (j <= right) {
+        temp.push_back(arr[j]);
+        j++;
+    }
+
+    for (int k = 0; k < temp.size(); ++k) {
+        arr[left + k] = temp[k];
+    }
+}
+
+void mergeSort(std::vector<int>& arr, int left, int right) {
+    // Base Case: If the segment contains 1 or 0 elements, it is already sorted
+    if (left >= right) {
+        return;
+    }
+
+    int mid = left + (right - left) / 2;
+
+    mergeSort(arr, left, mid);
+
+    mergeSort(arr, mid + 1, right);
+
+    merge(arr, left, mid, right);
+}
+
+void printVector(const std::vector<int>& arr) {
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
+    std::cout << "\n";
+}
+
+int main() {
+    std::vector<int> data = {38, 27, 43, 3, 9, 82, 10};
+
+    std::cout << "Original array: ";
+    printVector(data);
+
+    mergeSort(data, 0, data.size() - 1);
+
+    std::cout << "Sorted array:   ";
+    printVector(data);
+
+    return 0;
+}
